@@ -1,4 +1,4 @@
 def mousePressed(button):
     print(button)
-def mouseReleased(button):
+def keyReleased(button):
     print(button, "yp")

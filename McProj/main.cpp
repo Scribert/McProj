@@ -27,6 +27,15 @@ void mousePressedOrReleased(GLFWwindow* window, int button, int action, int mods
 
 }
 
+void keyPressedOrReleased(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (pluginsPtr) {
+        if (action == GLFW_PRESS)
+            pluginsPtr->run("keyPressed", key);
+        else if (action == GLFW_RELEASE)
+            pluginsPtr->run("keyReleased", key);
+    }
+}
+
 int main() {
 
     // Initialize GLFW
@@ -68,7 +77,8 @@ int main() {
 
     glfwSetCursorPosCallback(window, mouseMoved);
     glfwSetMouseButtonCallback(window, mousePressedOrReleased);
-    
+    glfwSetKeyCallback(window, keyPressedOrReleased);
+
     plugins.loadAllPlugins();
 
     while (!glfwWindowShouldClose(window)) {
