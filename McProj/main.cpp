@@ -17,6 +17,16 @@ void mouseMoved(GLFWwindow* window, double xpos, double ypos) {
         pluginsPtr->run("mouseMoved", glm::vec2(xpos, ypos));
 }
 
+void mousePressedOrReleased(GLFWwindow* window, int button, int action, int mods) {
+    if (pluginsPtr) {
+        if (action == GLFW_PRESS)
+            pluginsPtr->run("mousePressed", button);
+        else if (action == GLFW_RELEASE)
+            pluginsPtr->run("mouseReleased", button);
+    }
+
+}
+
 int main() {
 
     // Initialize GLFW
@@ -57,7 +67,8 @@ int main() {
     pluginsPtr = &plugins;
 
     glfwSetCursorPosCallback(window, mouseMoved);
-
+    glfwSetMouseButtonCallback(window, mousePressedOrReleased);
+    
     plugins.loadAllPlugins();
 
     while (!glfwWindowShouldClose(window)) {
