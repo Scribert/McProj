@@ -41,3 +41,21 @@ void Plugins::run(std::string function) {
 		}
 	}
 }
+
+void Plugins::run(std::string function, glm::vec2 value) {
+	for (auto itr = this->begin(); itr != this->end(); itr++) {
+
+		// If a module has a function with the name `function`
+		if (itr->second.attr("__dict__").attr("__contains__")(function).cast<bool>()
+			&& py::hasattr(itr->second.attr(function.c_str()), "__call__")) {
+
+			// Call the function `function`
+			try {
+				itr->second.attr(function.c_str())(value);
+			}
+			catch (py::error_already_set e) {
+				std::cout << e.what();
+			}
+		}
+	}
+}

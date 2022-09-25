@@ -3,10 +3,19 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include <pybind11/embed.h>
 namespace py = pybind11;
 
 #include "Plugins.hpp"
+
+// A way to access a local variable in a function in which I can't choose the parameters of
+Plugins* pluginsPtr = nullptr;
+
+void mouseMoved(GLFWwindow* window, double xpos, double ypos) {
+    if (pluginsPtr)
+        pluginsPtr->run("mouseMoved", glm::vec2(xpos, ypos));
+}
 
 int main() {
 
@@ -39,11 +48,15 @@ int main() {
     py::scoped_interpreter pythonInterpreter;
     py::module_ os = py::module_::import("os");
     py::module_ sys = py::module_::import("sys");
+    py::module_ editor = py::module_::import("editor");
 
     std::string path = os.attr("getcwd")().cast<std::string>();
     sys.attr("path").attr("append")(path + "\\plugins");
 
     Plugins plugins = Plugins();
+    pluginsPtr = &plugins;
+
+    glfwSetCursorPosCallback(window, mouseMoved);
 
     plugins.loadAllPlugins();
 
