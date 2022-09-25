@@ -3,7 +3,7 @@
 #include <pybind11/embed.h>
 namespace py = pybind11;
 
-PYBIND11_EMBEDDED_MODULE(editor, m) {
+PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
     py::class_<glm::vec2>(m, "vec2")
         .def(py::init<float, float>())
         .def_readwrite("x", &glm::vec2::x)

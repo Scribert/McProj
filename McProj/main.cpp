@@ -67,7 +67,7 @@ int main() {
     py::scoped_interpreter pythonInterpreter;
     py::module_ os = py::module_::import("os");
     py::module_ sys = py::module_::import("sys");
-    py::module_ editor = py::module_::import("editor");
+    py::module_ editor = py::module_::import("minecraft_editor");
 
     std::string path = os.attr("getcwd")().cast<std::string>();
     sys.attr("path").attr("append")(path + "\\plugins");
