@@ -7,3 +7,5 @@ def keyPressed(key):
         print("SPACE IS WACK!")
 def mouseButtonPressed():
     print("HIEDIDOOOOOO")
+def everyFrame(deltaTime):
+    print(1 / deltaTime)

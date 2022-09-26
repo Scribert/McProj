@@ -8,6 +8,7 @@
 namespace py = pybind11;
 
 #include "Plugins.hpp"
+#include "Stopwatch.hpp"
 
 // A way to access a local variable in a function in which I can't choose the parameters of
 Plugins* pluginsPtr = nullptr;
@@ -58,32 +59,41 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
+    glfwSetCursorPosCallback(window, mouseMoved);
+    glfwSetMouseButtonCallback(window, mouseButtonPressedOrReleased);
+    glfwSetKeyCallback(window, keyPressedOrReleased);
+
     // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Couldn't initialize GLAD";
         return -1;
     }
 
+    // Start the interpreter and load builtin modules
     py::scoped_interpreter pythonInterpreter;
     py::module_ os = py::module_::import("os");
     py::module_ sys = py::module_::import("sys");
     py::module_ editor = py::module_::import("minecraft_editor");
 
+    // Add "\plugins" to the module search path
     std::string path = os.attr("getcwd")().cast<std::string>();
     sys.attr("path").attr("append")(path + "\\plugins");
 
+    // Load all plugins
     Plugins plugins = Plugins();
     pluginsPtr = &plugins;
-
-    glfwSetCursorPosCallback(window, mouseMoved);
-    glfwSetMouseButtonCallback(window, mouseButtonPressedOrReleased);
-    glfwSetKeyCallback(window, keyPressedOrReleased);
-
     plugins.loadAllPlugins();
 
-    while (!glfwWindowShouldClose(window)) {
+    Stopwatch frameStopwatch;
 
-        plugins.run("everyFrame");
+    while (!glfwWindowShouldClose(window)) {
+        
+        // Calculate deltaTime (seconds per frame)
+        frameStopwatch.SaveTime();
+        frameStopwatch.NewLap();
+
+        // Call the function everyFrame in all modules with deltaTime as a parameter
+        plugins.run("everyFrame", frameStopwatch.SavedTime());
 
         glClearColor(0.471f, 0.655f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
