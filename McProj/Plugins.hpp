@@ -13,5 +13,9 @@ public:
 	void loadAllPlugins();
 	void run(std::string function);
 	void run(std::string function, int value);
+	void run(std::string function, int value1, int value2);
 	void run(std::string function, glm::vec2 value);
+private:
+	bool hasFunction(py::module_& module, std::string name);
+	int numberOfArguments(py::module_& module, std::string name);
 };

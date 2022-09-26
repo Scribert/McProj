@@ -5,3 +5,5 @@ def mouseMoved(vector):
 def keyPressed(key):
     if key == mc.KEY_SPACE:
         print("SPACE IS WACK!")
+def mouseButtonPressed():
+    print("HIEDIDOOOOOO")

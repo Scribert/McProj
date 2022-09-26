@@ -17,12 +17,12 @@ void mouseMoved(GLFWwindow* window, double xpos, double ypos) {
         pluginsPtr->run("mouseMoved", glm::vec2(xpos, ypos));
 }
 
-void mousePressedOrReleased(GLFWwindow* window, int button, int action, int mods) {
+void mouseButtonPressedOrReleased(GLFWwindow* window, int button, int action, int mods) {
     if (pluginsPtr) {
         if (action == GLFW_PRESS)
-            pluginsPtr->run("mousePressed", button);
+            pluginsPtr->run("mouseButtonPressed", button, mods);
         else if (action == GLFW_RELEASE)
-            pluginsPtr->run("mouseReleased", button);
+            pluginsPtr->run("mouseButtonReleased", button, mods);
     }
 
 }
@@ -30,9 +30,9 @@ void mousePressedOrReleased(GLFWwindow* window, int button, int action, int mods
 void keyPressedOrReleased(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (pluginsPtr) {
         if (action == GLFW_PRESS)
-            pluginsPtr->run("keyPressed", key);
+            pluginsPtr->run("keyPressed", key, mods);
         else if (action == GLFW_RELEASE)
-            pluginsPtr->run("keyReleased", key);
+            pluginsPtr->run("keyReleased", key, mods);
     }
 }
 
@@ -76,7 +76,7 @@ int main() {
     pluginsPtr = &plugins;
 
     glfwSetCursorPosCallback(window, mouseMoved);
-    glfwSetMouseButtonCallback(window, mousePressedOrReleased);
+    glfwSetMouseButtonCallback(window, mouseButtonPressedOrReleased);
     glfwSetKeyCallback(window, keyPressedOrReleased);
 
     plugins.loadAllPlugins();
