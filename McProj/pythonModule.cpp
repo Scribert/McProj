@@ -1,9 +1,28 @@
+#include <string>
+
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <pybind11/embed.h>
+
+#include "Element.hpp"
 namespace py = pybind11;
 
 PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
+    py::class_<Element>(m, "Element")
+        .def(py::init<std::string>(), py::arg("name"))
+        .def_property_readonly("name", &Element::name)
+        .def_readwrite("attributes", &Element::attributes)
+        .def_readwrite("contents", &Element::contents)
+        .def("__repr__", [](const Element& element) {
+            std::string output = "{name = ";
+            output += element.name();
+            output += ", attributes = ";
+            output += element.attributes.attr("__repr__")().cast<std::string>();
+            output += ", contents = ";
+            output += element.contents.attr("__repr__")().cast<std::string>();
+            return output + "}";
+        });
+        
     py::class_<glm::vec2>(m, "vec2")
         .def(py::init<float, float>())
         .def_readwrite("x", &glm::vec2::x)

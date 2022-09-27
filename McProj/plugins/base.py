@@ -1,11 +1,20 @@
 import minecraft_editor as mc
-def mouseMoved(vector):
-    print(vector.x, vector.y)
-    e = mc.vec3(0.0, 4.0, 3.0)
+
+myElement = mc.Element("robot")
+#bob = mc.ElementAttr()
+
 def keyPressed(key):
     if key == mc.KEY_SPACE:
         print("SPACE IS WACK!")
+    print(myElement)
+    myElement.attributes["whelp"] = "20"
+    myElement.attributes["whelpp"] = "70"
+    myElement.attributes["whelppp"] = "180"
+    for att in myElement.attributes:
+        print(att)
+    myElement.attributes = {'LITTLE': "MACK", "PIZZA": (5, 6)}
+    #myElement.addChild(mc.Element("Fire bacon"))
+    print(myElement.contents)
+    
 def mouseButtonPressed():
     print("HIEDIDOOOOOO")
-def everyFrame(deltaTime):
-    print(1 / deltaTime)

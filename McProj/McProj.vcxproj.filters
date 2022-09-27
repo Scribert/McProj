@@ -33,12 +33,18 @@
     <ClCompile Include="Stopwatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Plugins.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Stopwatch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Element.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

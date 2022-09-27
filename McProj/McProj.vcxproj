@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\libs\glad\src\glad.c" />
+    <ClCompile Include="Element.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Plugins.cpp" />
     <ClCompile Include="pythonModule.cpp" />
     <ClCompile Include="Stopwatch.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Element.hpp" />
     <ClInclude Include="Plugins.hpp" />
     <ClInclude Include="Stopwatch.hpp" />
   </ItemGroup>
