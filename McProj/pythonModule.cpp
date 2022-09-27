@@ -5,9 +5,14 @@
 #include <pybind11/embed.h>
 
 #include "Element.hpp"
+#include "PressedList.hpp"
+
 namespace py = pybind11;
 
 PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
+    py::class_<PressedList>(m, "PressedList")
+        .def("__getitem__", &PressedList::operator[]);
+
     py::class_<Element>(m, "Element")
         .def(py::init<std::string>(), py::arg("name"))
         .def_property_readonly("name", &Element::name)

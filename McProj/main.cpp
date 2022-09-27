@@ -8,6 +8,7 @@
 namespace py = pybind11;
 
 #include "Plugins.hpp"
+#include "PressedList.hpp"
 #include "Stopwatch.hpp"
 
 // A way to access a local variable in a function in which I can't choose the parameters of
@@ -74,6 +75,10 @@ int main() {
     py::module_ os = py::module_::import("os");
     py::module_ sys = py::module_::import("sys");
     py::module_ editor = py::module_::import("minecraft_editor");
+
+    // Add attrs to minecraft_editor module
+    editor.attr("pressedKeys") = PressedList(window, glfwGetKey);
+    editor.attr("pressedMouseButtons") = PressedList(window, glfwGetMouseButton);
 
     // Add "\plugins" to the module search path
     std::string path = os.attr("getcwd")().cast<std::string>();

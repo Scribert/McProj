@@ -3,7 +3,9 @@ import minecraft_editor as mc
 myElement = mc.Element("robot")
 #bob = mc.ElementAttr()
 
+
 def keyPressed(key):
+    #print(mc.pressed[mc.KEY_F]);
     if key == mc.KEY_SPACE:
         print("SPACE IS WACK!")
     print(myElement)
@@ -18,3 +20,6 @@ def keyPressed(key):
     
 def mouseButtonPressed():
     print("HIEDIDOOOOOO")
+
+def everyFrame():
+    print(mc.pressedKeys[mc.KEY_SPACE]);
