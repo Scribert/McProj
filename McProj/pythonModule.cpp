@@ -5,29 +5,11 @@
 #include <pybind11/embed.h>
 
 #include "Component.hpp"
-#include "Element.hpp"
 #include "PressedList.hpp"
 
 namespace py = pybind11;
 
 PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
-    py::class_<PressedList>(m, "PressedList")
-        .def("__getitem__", &PressedList::operator[]);
-
-    py::class_<Element>(m, "Element")
-        .def(py::init<std::string>(), py::arg("name"))
-        .def_property_readonly("name", &Element::name)
-        .def_readwrite("attributes", &Element::attributes)
-        .def_readwrite("contents", &Element::contents)
-        .def("__repr__", [](const Element& element) {
-            std::string output = "{name = ";
-            output += element.name();
-            output += ", attributes = ";
-            output += element.attributes.attr("__repr__")().cast<std::string>();
-            output += ", contents = ";
-            output += element.contents.attr("__repr__")().cast<std::string>();
-            return output + "}";
-        });
         
     py::class_<glm::vec2>(m, "vec2")
         .def(py::init<float, float>())
@@ -212,6 +194,9 @@ PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
     m.attr("MOUSE_BUTTON_LEFT") = GLFW_MOUSE_BUTTON_LEFT;
     m.attr("MOUSE_BUTTON_RIGHT") = GLFW_MOUSE_BUTTON_RIGHT;
     m.attr("MOUSE_BUTTON_MIDDLE") = GLFW_MOUSE_BUTTON_MIDDLE;
+
+    py::class_<PressedList>(m, "PressedList")
+        .def("__getitem__", &PressedList::operator[]);
 
     py::class_<Component::Iterator> component(m, "Component");
 
