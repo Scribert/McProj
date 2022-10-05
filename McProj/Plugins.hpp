@@ -9,6 +9,8 @@ namespace py = pybind11;
 
 class Plugins : public std::map<std::string, py::module_> {
 public:
+	static Plugins plugins;
+
 	void loadPlugin(std::string name);
 	void loadAllPlugins();
 	void run(std::string function, int value1, int value2);

@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+Plugins Plugins::plugins;
+
 void Plugins::loadPlugin(std::string name) {
 	try {
 		this->insert(std::make_pair(name, py::module_::import(name.c_str())));

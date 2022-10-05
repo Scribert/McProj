@@ -7,36 +7,10 @@
 #include <pybind11/embed.h>
 namespace py = pybind11;
 
+#include "events.hpp"
 #include "Plugins.hpp"
 #include "PressedList.hpp"
 #include "Stopwatch.hpp"
-
-// A way to access a local variable in a function in which I can't choose the parameters of
-Plugins* pluginsPtr = nullptr;
-
-void mouseMoved(GLFWwindow* window, double xpos, double ypos) {
-    if (pluginsPtr)
-        pluginsPtr->run("mouseMoved", glm::vec2(xpos, ypos));
-}
-
-void mouseButtonPressedOrReleased(GLFWwindow* window, int button, int action, int mods) {
-    if (pluginsPtr) {
-        if (action == GLFW_PRESS)
-            pluginsPtr->run("mouseButtonPressed", button, mods);
-        else if (action == GLFW_RELEASE)
-            pluginsPtr->run("mouseButtonReleased", button, mods);
-    }
-
-}
-
-void keyPressedOrReleased(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (pluginsPtr) {
-        if (action == GLFW_PRESS)
-            pluginsPtr->run("keyPressed", key, mods);
-        else if (action == GLFW_RELEASE)
-            pluginsPtr->run("keyReleased", key, mods);
-    }
-}
 
 int main() {
 
@@ -85,9 +59,7 @@ int main() {
     sys.attr("path").attr("append")(path + "\\plugins");
 
     // Load all plugins
-    Plugins plugins = Plugins();
-    pluginsPtr = &plugins;
-    plugins.loadAllPlugins();
+    Plugins::plugins.loadAllPlugins();
 
     Stopwatch frameStopwatch;
 
@@ -98,7 +70,7 @@ int main() {
         frameStopwatch.NewLap();
 
         // Call the function everyFrame in all modules with deltaTime as a parameter
-        plugins.run("everyFrame", frameStopwatch.SavedTime());
+        Plugins::plugins.run("everyFrame", frameStopwatch.SavedTime());
 
         glClearColor(0.471f, 0.655f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
