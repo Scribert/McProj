@@ -22,4 +22,5 @@ def mouseButtonPressed():
     print("HIEDIDOOOOOO")
 
 def everyFrame():
-    print(mc.pressedKeys[mc.KEY_SPACE]);
+    pass
+    #print(mc.pressedKeys[mc.KEY_SPACE]);

@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <pybind11/embed.h>
 
+#include "Component.hpp"
 #include "Element.hpp"
 #include "PressedList.hpp"
 
@@ -211,4 +212,25 @@ PYBIND11_EMBEDDED_MODULE(minecraft_editor, m) {
     m.attr("MOUSE_BUTTON_LEFT") = GLFW_MOUSE_BUTTON_LEFT;
     m.attr("MOUSE_BUTTON_RIGHT") = GLFW_MOUSE_BUTTON_RIGHT;
     m.attr("MOUSE_BUTTON_MIDDLE") = GLFW_MOUSE_BUTTON_MIDDLE;
+
+    py::class_<Component::Iterator> component(m, "Component");
+
+    py::enum_<Component::Type>(component, "Type")
+        .value("Root", Component::Type::Root)
+        .value("Scene", Component::Type::Scene);
+
+    component
+        .def("super", &Component::Iterator::getSupercomponent)
+        .def("toSuper", &Component::Iterator::gotoSupercomponent)
+        .def("sub", &Component::Iterator::getSubcomponent, py::arg("index"))
+        .def("toSub", &Component::Iterator::gotoSubcomponent, py::arg("index"))
+        .def("addSub", &Component::Iterator::insertNewComponent, py::arg("name"), py::arg("type"), py::arg("index"))
+        .def("delSub", &Component::Iterator::eliminateSubcomponent, py::arg("index"))
+        .def("delSubs", &Component::Iterator::eliminateAllSubcomponents)
+        .def("moveSub", &Component::Iterator::moveSubcomponent, py::arg("toComponent"), py::arg("fromIndex"), py::arg("toIndex"))
+        .def_property("name", &Component::Iterator::getComponentName, &Component::Iterator::renameComponent)
+        .def_property_readonly("type", &Component::Iterator::getComponentType)
+        .def_property_readonly("subCount", &Component::Iterator::getSubcomponentCount)
+        .def_static("exists", &Component::componentExists, py::arg("name"))
+        .def_static("get", &Component::getComponent, py::arg("name"));
 }
